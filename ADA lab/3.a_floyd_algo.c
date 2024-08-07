@@ -1,41 +1,39 @@
 #include<stdio.h>
-
 #define V 4
-#define INF 9999
 
-void printsolution(int dist[][V]);
-void floydWarshall(int graph[][V]);
+void printSolution(int dist[][V]);
 
-void floydWarshall(int graph[][V]) {
-    int dist[V][V];
-    int i, j, k;
-
-    // Initialize the distance array same as input graph matrix
-    for(i = 0; i < V; i++) {
-        for(j = 0; j < V; j++) {
+void floydWarshall(int graph[][V]) { 
+    int dist[V][V], i, j, k;
+    
+    // Initialize the solution matrix same as input graph matrix
+    for (i = 0; i < V; i++) {
+        for (j = 0; j < V; j++) {
             dist[i][j] = graph[i][j];
         }
     }
 
-    // Floyd-Warshall algorithm
-    for(k = 0; k < V; k++) {
-        for(i = 0; i < V; i++) {
-            for(j = 0; j < V; j++) {
-                if(dist[i][k] + dist[k][j] < dist[i][j]) {
+    // Update the solution matrix by considering all vertices
+    for (k = 0; k < V; k++) {
+        for (i = 0; i < V; i++) {
+            for (j = 0; j < V; j++) {
+                if (dist[i][k] + dist[k][j] < dist[i][j]) {
                     dist[i][j] = dist[i][k] + dist[k][j];
                 }
             }
         }
     }
 
-    printsolution(dist);
+    // Print the shortest distance matrix
+    printSolution(dist);
 }
 
-void printsolution(int dist[][V]) {
-    printf("Following matrix shows the shortest distances between every pair of vertices:\n");
-    for(int i = 0; i < V; i++) {
-        for(int j = 0; j < V; j++) {
-            if(dist[i][j] == INF) {
+void printSolution(int dist[][V]) {
+    int i, j;
+    printf("Following matrix shows the shortest distances between every pair of vertices\n");
+    for (i = 0; i < V; i++) {
+        for (j = 0; j < V; j++) {
+            if (dist[i][j] == 9999) {
                 printf("%7s", "INF");
             } else {
                 printf("%7d", dist[i][j]);
@@ -47,12 +45,13 @@ void printsolution(int dist[][V]) {
 
 int main() {
     int graph[V][V] = {
-        {0, 5, INF, 10},
-        {INF, 0, 3, INF},
-        {INF, INF, 0, 1},
-        {INF, INF, INF, 0}
+        {0, 5, 9999, 10},
+        {9999, 0, 3, 9999},
+        {9999, 9999, 0, 1},
+        {9999, 9999, 9999, 0}
     };
 
     floydWarshall(graph);
     return 0;
 }
+
